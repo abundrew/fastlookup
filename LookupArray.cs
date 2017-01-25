@@ -16,14 +16,22 @@ namespace FastLookup
 
         int _keyWidth = 0;
         int _lookupHeight = 0;
+        bool _beginningOfWordOnly = false;
         char[] _alphabet = null;
         Dictionary<char, int> _alphakey = null;
+
+        //
+        // Lookup data is accumulated into an array.
+        // Index for key s: (((((ord(s[0]) * 26) + ord(s[1])) * 26 + ord(s[2])) * 26 + ord(s[3])) * 26 + ord(s[4])) * 26.
+        // Dictionary<string, LookupItem[]> is a simple alternative and it's the only way if key width > 5 but its performance can be slower.
+        //
         LookupItem[][] _array = null;
 
-        public LookupArray(int keyWidth, int lookupHeight, char[] alphabet)
+        public LookupArray(int keyWidth, int lookupHeight, char[] alphabet, bool beginningOfWordOnly)
         {
             _keyWidth = keyWidth;
             _lookupHeight = lookupHeight;
+            _beginningOfWordOnly = beginningOfWordOnly;
             _alphabet = alphabet;
             _alphakey = new Dictionary<char, int>();
             int ix = 0;
@@ -42,6 +50,8 @@ namespace FastLookup
             {
                 for (int i = 0; i < word.Length - _keyWidth + 1; i++)
                 {
+                    if (i > 0 && _beginningOfWordOnly) break;
+
                     int ix = IndexKey(word.Substring(i, _keyWidth));
                     int wt = i * 10 + iw;
 

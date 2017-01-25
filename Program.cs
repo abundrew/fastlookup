@@ -13,7 +13,7 @@ namespace FastLookup
         {
             string lookupFile = @"c:\temp\lookupdic.txt";
             string exportFile = @"c:\temp\output.txt";
-            LookupArray la = new LookupArray(5, 10, "abcdefghijklmnopqrstuvwxyz".ToArray());
+            LookupArray la = new LookupArray(5, 10, "abcdefghijklmnopqrstuvwxyz".ToArray(), true);
 
             using (StreamReader sr = new StreamReader(lookupFile))
             {
